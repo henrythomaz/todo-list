@@ -1,9 +1,26 @@
-import js from "@eslint/js";
-import globals from "globals";
-import { defineConfig } from "eslint/config";
+import eslintPluginJs from "@eslint/js";
 
+export default [
+  {
+    ignores: ["node_modules/**"],
 
-export default defineConfig([
-  { files: ["**/*.{js,mjs,cjs}"], plugins: { js }, extends: ["js/recommended"] },
-  { files: ["**/*.{js,mjs,cjs}"], languageOptions: { globals: globals.node } },
-]);
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "module"
+    },
+
+    plugins: {
+      js: eslintPluginJs
+    },
+
+    rules: {
+      "semi": ["error", "always"],                   // Ponto e vírgula
+      "quotes": ["error", "double"],                 // Aspas duplas
+      "padding-line-between-statements": [           // Linha em branco entre funções
+        "error",
+        { blankLine: "always", prev: "function", next: "*" },
+        { blankLine: "always", prev: "*", next: "function" }
+      ]
+    }
+  }
+];

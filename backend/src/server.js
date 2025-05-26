@@ -1,7 +1,9 @@
 import app from "./app.js";
+import dotenv from "dotenv"
 
-const PORT = 3333;
+dotenv.config();
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log("Running in port:", PORT)
+  console.log("Rodando na porta:", PORT)
 })
