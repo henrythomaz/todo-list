@@ -1,6 +1,10 @@
+
+import tasksModel from "../models/tasksModel.js"
+
 class tasksController 
 {
-  index(req, res) {
-    return res.status(200).json({ message: "Hello, World!" });
+  async index(req, res) {
+    const tasks = await tasksModel.getTasks();
+    return res.status(200).json(tasks);
   }
 } export default new tasksController();

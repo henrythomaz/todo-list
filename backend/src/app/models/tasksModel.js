@@ -4,6 +4,6 @@ class tasksModel
 {
   async getTasks() {
     const [rows] = await connection.execute("SELECT * FROM tasks");
-    return rows;
+    return rows ;
   }
 } export default new tasksModel();
