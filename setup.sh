@@ -1,28 +1,27 @@
-#!/bin/bash
-
-echo "Iniciando setup do ambiente Docker..."
-
-CONTAINER_NAME="mysql"
-
-# Remove container antigo se existir
-if [ "$(docker ps -a -q -f name=$CONTAINER_NAME)" ]; then
-    echo "Removendo container antigo..."
-    docker rm -f $CONTAINER_NAME
-fi
-
-# Cria volume se não existir
-if [ -z "$(docker volume ls -q -f name=mysql_data)" ]; then
-    echo "Criando volume mysql_data..."
-    docker volume create mysql_data
-fi
-
 # Cria container MySQL
 echo "Criando novo container MySQL..."
 docker run -d \
-  --name $CONTAINER_NAME \
-  -e MYSQL_ROOT_PASSWORD=senha123 \
+  --name mysql \
+  -e MYSQL_ROOT_PASSWORD=root \
   -v mysql_data:/var/lib/mysql \
   -p 3306:3306 \
   mysql:latest
+  
+# Espera o MySQL iniciar
+echo "Aguardando o MySQL iniciar..."
+sleep 20
 
-echo "Container MySQL iniciado com sucesso!"
+# Cria banco de dados e tabela automaticamente
+echo "Criando banco de dados e tabela..."
+docker exec -i mysql mysql -uroot -proot <<EOF
+CREATE DATABASE IF NOT EXISTS todolist;
+USE todolist;
+CREATE TABLE IF NOT EXISTS tasks (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(45) NOT NULL,
+    status VARCHAR(45) NOT NULL,
+    created_at VARCHAR(45) NOT NULL
+);
+EOF
+
+echo "Banco de dados e tabela criados com sucesso!"
