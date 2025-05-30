@@ -5,10 +5,16 @@ class tasksController
 {
   async index(req, res) {
     const tasks = await tasksModel.getTasks();
-    return res.status(200).json(tasks)
+    return res.status(200).json(tasks);
+  };
+  async create(req, res) {
+
+    if (!req.body) {
+      return res.status(400).json({ error: "O o body está vazio." });
+    }
+
+    const createdTask = await tasksModel.createTask(req.body);
+    return res.status(201).json(createdTask);
   }
-  async show(req, res) {
-    const id = req.params.id;
-    const tasks = await tasksModel.getTasksById(id);
-  }
+
 } export default new tasksController();
